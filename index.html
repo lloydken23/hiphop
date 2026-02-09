@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HI HIPHOP COPRISA</title>
+    <style>
+        :root {
+            --accent: #ff3b2f; 
+            --glass: rgba(0, 0, 0, 0.85);
+        }
+
+        body, html {
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            font-family: 'Segoe UI', sans-serif;
+            color: white;
+            /* Using the high-quality stage background from Google/Unsplash */
+            background: #000 url('https://images.unsplash.com/photo-1470229722913-7c0e2dbbafd3?q=80&w=2070&auto=format&fit=crop') no-repeat center center fixed;
+            background-size: cover;
+            overflow-x: hidden;
+        }
+
+        .overlay {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.6);
+            z-index: 0;
+        }
+
+        h1 {
+            font-size: 3.5rem;
+            font-family: 'Impact', sans-serif;
+            text-transform: uppercase;
+            margin-top: 40px;
+            text-shadow: 0 0 20px var(--accent);
+            z-index: 10;
+        }
+
+        .start-btn {
+            background: var(--accent);
+            color: white;
+            border: none;
+            padding: 18px 50px;
+            font-size: 1.2rem;
+            font-weight: 900;
+            cursor: pointer;
+            border-radius: 50px;
+            margin-top: 20px;
+            z-index: 100;
+            box-shadow: 0 5px 20px rgba(255, 59, 47, 0.5);
+        }
+
+        /* Container that keeps photos outside the text */
+        .stage-area {
+            position: relative;
+            width: 100%;
+            max-width: 1200px;
+            display: flex;
+            justify-content: center;
+            margin-top: 40px;
+            padding-bottom: 100px;
+        }
+
+        /* The Message Box (Small & Centered) */
+        .message-box {
+            width: 500px;
+            background: var(--glass);
+            backdrop-filter: blur(10px);
+            padding: 35px;
+            border-radius: 25px;
+            border: 2px solid var(--accent);
+            font-size: 1.1rem;
+            line-height: 1.7;
+            opacity: 0;
+            white-space: pre-wrap;
+            z-index: 10;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.8);
+        }
+
+        /* Photos Popping OUTSIDE the text */
+        .pop-photo {
+            position: absolute;
+            width: 220px;
+            border: 4px solid white;
+            border-radius: 15px;
+            opacity: 0;
+            transition: all 0.9s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.6);
+            z-index: 5;
+        }
+
+        /* Positioning photos around the box */
+        #img-left { left: 20px; top: 50px; transform: translateX(-150px) rotate(-10deg); }
+        #img-right { right: 20px; top: 150px; transform: translateX(150px) rotate(10deg); }
+        #img-bottom { bottom: -80px; left: 50%; transform: translate(-50%, 150px); width: 260px; }
+
+        .reveal { opacity: 1 !important; transform: translate(0) rotate(0) !important; }
+        #img-bottom.reveal { transform: translate(-50%, 0) rotate(0) !important; }
+
+        @media (max-width: 1000px) {
+            .pop-photo { width: 150px; position: relative; margin: 10px; left: auto !important; right: auto !important; top: auto !important; }
+            .stage-area { flex-direction: column; align-items: center; }
+            .message-box { width: 90%; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="overlay"></div>
+    <h1>HI HIPHOP COPRISA</h1>
+    <button class="start-btn" id="btn" onclick="startSurprise()">Read Message</button>
+
+    <div class="stage-area">
+        <img src="https://i.ibb.co/zh9SqtnP/coprisa.jpg" id="img-left" class="pop-photo">
+        <img src="https://i.ibb.co/tPNT8km1/photo.jpg" id="img-right" class="pop-photo">
+        <img src="https://i.ibb.co/ZRRtFj3Q/photo.jpg" id="img-bottom" class="pop-photo">
+
+        <div id="typebox" class="message-box"></div>
+    </div>
+
+    <script>
+        function startSurprise() {
+            document.getElementById('btn').style.display = 'none';
+            
+            // Staggered reveals
+            setTimeout(() => document.getElementById('img-left').classList.add('reveal'), 300);
+            setTimeout(() => document.getElementById('img-right').classList.add('reveal'), 600);
+            setTimeout(() => document.getElementById('img-bottom').classList.add('reveal'), 900);
+            
+            const box = document.getElementById('typebox');
+            box.style.opacity = 1;
+
+            const fullText = `Hi mga Langga,\n\nI want you to look back at COPRISA and feel nothing but pride. You didn't just compete; you showed up as the best versions of yourselves and left every bit of your soul on that stage.\n\nA trophy defines a ranking for a day, but it never defines the growth I’ve seen in each of you over these months. I’ve seen the long nights, the exhaustion, and the way you pushed through every single difficulty. The fire you showed out there was a win that no one can take away.\n\nYou danced as a family, and you represented us with so much heart. I am so incredibly proud to be your senior and to have witnessed what you are truly capable of. \n\nKeep that hunger. Keep that passion. This is just one chapter, and you already look like champions to me.\n\nAlways proud of you,\nKuya lloyd`;
+
+            let i = 0;
+            function type() {
+                if (i < fullText.length) {
+                    box.innerHTML += fullText.charAt(i);
+                    i++;
+                    setTimeout(type, 18); // Smooth typing speed
+                    if (i % 10 === 0) window.scrollBy(0, 40);
+                }
+            }
+            type();
+        }
+    </script>
+</body>
+</html>
