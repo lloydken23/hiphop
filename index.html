@@ -19,7 +19,7 @@
             align-items: center;
             font-family: 'Segoe UI', sans-serif;
             color: white;
-            /* Professional stage background from Google/Unsplash */
+            /* Using the high-quality stage background from Google/Unsplash */
             background: #000 url('https://images.unsplash.com/photo-1470229722913-7c0e2dbbafd3?q=80&w=2070&auto=format&fit=crop') no-repeat center center fixed;
             background-size: cover;
             overflow-x: hidden;
@@ -29,7 +29,7 @@
             position: fixed;
             top: 0; left: 0;
             width: 100%; height: 100%;
-            background: rgba(0, 0, 0, 0.65);
+            background: rgba(0, 0, 0, 0.7);
             z-index: 0;
         }
 
@@ -56,14 +56,14 @@
             box-shadow: 0 5px 25px rgba(255, 59, 47, 0.5);
         }
 
-        /* Container for alignment */
+        /* Container for absolute top alignment */
         .stage-area {
             position: relative;
             width: 100%;
-            max-width: 1100px;
+            max-width: 1150px;
             display: flex;
             justify-content: center;
-            margin-top: 40px;
+            margin-top: 20px; /* Brought closer to the top header */
             padding-bottom: 100px;
         }
 
@@ -81,35 +81,43 @@
             white-space: pre-wrap;
             z-index: 10;
             box-shadow: 0 20px 60px rgba(0,0,0,0.9);
+            margin-top: 50px; /* Slight offset for better spacing from header */
         }
 
-        /* Photos Aligned at the TOP of the message */
+        /* Photos Aligned at the very TOP of the container */
         .pop-photo {
             position: absolute;
-            width: 200px; /* Adjusted size for top alignment */
+            width: 210px; 
             border: 4px solid white;
             border-radius: 12px;
             opacity: 0;
             transition: all 0.9s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            box-shadow: 0 15px 40px rgba(0,0,0,0.7);
+            /* Added glow effect to borders */
+            box-shadow: 0 0 20px rgba(255, 59, 47, 0.6), 0 15px 40px rgba(0,0,0,0.7);
             z-index: 5;
-            top: 0; /* Aligned to the top of the .stage-area */
+            top: 0; /* Forced to the absolute top of the stage area */
         }
 
-        /* Side-by-side Top Alignment */
-        #img-left { left: 10px; transform: translateX(-150px) rotate(-10deg); }
-        #img-right { right: 10px; transform: translateX(150px) rotate(10deg); }
+        /* Aligned Left and Right at the TOP */
+        #img-left { left: 10px; transform: translateX(-180px) rotate(-8deg); }
+        #img-right { right: 10px; transform: translateX(180px) rotate(8deg); }
         
-        /* Bottom photo still anchors at the base */
-        #img-bottom { bottom: -120px; left: 50%; transform: translate(-50%, 150px); width: 250px; }
+        /* Middle photo also brought UP to align with the others */
+        #img-middle { 
+            top: -20px; /* Slightly higher for a layered look */
+            left: 50%; 
+            transform: translate(-50%, -100px); 
+            width: 230px; 
+        }
 
         .reveal { opacity: 1 !important; transform: translate(0) rotate(0) !important; }
-        #img-bottom.reveal { transform: translate(-50%, 0) rotate(0) !important; }
+        #img-middle.reveal { transform: translate(-50%, 0) rotate(0) !important; }
 
-        @media (max-width: 1000px) {
+        @media (max-width: 1050px) {
             .pop-photo { width: 140px; position: relative; margin: 10px; left: auto !important; right: auto !important; top: auto !important; }
             .stage-area { flex-direction: column; align-items: center; }
-            .message-box { width: 90%; }
+            .message-box { width: 90%; margin-top: 20px; }
+            #img-middle { left: auto; transform: none; width: 180px; }
         }
     </style>
 </head>
@@ -121,8 +129,8 @@
 
     <div class="stage-area">
         <img src="https://i.ibb.co/zh9SqtnP/coprisa.jpg" id="img-left" class="pop-photo">
+        <img src="https://i.ibb.co/ZRRtFj3Q/photo.jpg" id="img-middle" class="pop-photo">
         <img src="https://i.ibb.co/tPNT8km1/photo.jpg" id="img-right" class="pop-photo">
-        <img src="https://i.ibb.co/ZRRtFj3Q/photo.jpg" id="img-bottom" class="pop-photo">
 
         <div id="typebox" class="message-box"></div>
     </div>
@@ -131,10 +139,10 @@
         function startSurprise() {
             document.getElementById('btn').style.display = 'none';
             
-            // Trigger reveals
+            // Staggered reveals for the top-aligned photos
             setTimeout(() => document.getElementById('img-left').classList.add('reveal'), 300);
-            setTimeout(() => document.getElementById('img-right').classList.add('reveal'), 600);
-            setTimeout(() => document.getElementById('img-bottom').classList.add('reveal'), 900);
+            setTimeout(() => document.getElementById('img-middle').classList.add('reveal'), 600);
+            setTimeout(() => document.getElementById('img-right').classList.add('reveal'), 900);
             
             const box = document.getElementById('typebox');
             box.style.opacity = 1;
