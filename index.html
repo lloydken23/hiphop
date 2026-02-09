@@ -7,7 +7,7 @@
     <style>
         :root {
             --accent: #ff3b2f; 
-            --glass: rgba(0, 0, 0, 0.88);
+            --glass: rgba(0, 0, 0, 0.9);
         }
 
         body, html {
@@ -37,7 +37,7 @@
             font-size: 3.5rem;
             font-family: 'Impact', sans-serif;
             text-transform: uppercase;
-            margin-top: 40px;
+            margin-top: 30px;
             text-shadow: 0 0 20px var(--accent);
             z-index: 10;
         }
@@ -46,30 +46,45 @@
             background: var(--accent);
             color: white;
             border: none;
-            padding: 18px 50px;
+            padding: 15px 50px;
             font-size: 1.2rem;
             font-weight: 900;
             cursor: pointer;
             border-radius: 50px;
-            margin-top: 20px;
+            margin-top: 15px;
             z-index: 100;
             box-shadow: 0 5px 25px rgba(255, 59, 47, 0.5);
         }
 
-        /* Container for absolute top alignment */
-        .stage-area {
-            position: relative;
-            width: 100%;
-            max-width: 1150px;
+        /* Horizontal Container for Photos */
+        .photo-row {
             display: flex;
+            flex-direction: row; /* Forces horizontal alignment */
             justify-content: center;
-            margin-top: 20px; /* Brought closer to the top header */
-            padding-bottom: 100px;
+            gap: 20px;
+            width: 90%;
+            margin-top: 30px;
+            z-index: 10;
         }
 
-        /* Message Box */
+        .pop-photo {
+            width: 250px; /* Horizontal feel */
+            height: 180px;
+            border: 3px solid white;
+            border-radius: 12px;
+            object-fit: cover;
+            opacity: 0;
+            transform: translateY(-50px);
+            transition: all 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 0 15px rgba(255, 59, 47, 0.4), 0 10px 30px rgba(0,0,0,0.7);
+        }
+
+        .reveal { opacity: 1 !important; transform: translateY(0) !important; }
+
+        /* Centered Message Box Below Photos */
         .message-box {
-            width: 500px;
+            max-width: 650px;
+            width: 90%;
             background: var(--glass);
             backdrop-filter: blur(12px);
             padding: 35px;
@@ -80,44 +95,15 @@
             opacity: 0;
             white-space: pre-wrap;
             z-index: 10;
+            margin-top: 30px;
+            margin-bottom: 80px;
             box-shadow: 0 20px 60px rgba(0,0,0,0.9);
-            margin-top: 50px; /* Slight offset for better spacing from header */
         }
 
-        /* Photos Aligned at the very TOP of the container */
-        .pop-photo {
-            position: absolute;
-            width: 210px; 
-            border: 4px solid white;
-            border-radius: 12px;
-            opacity: 0;
-            transition: all 0.9s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            /* Added glow effect to borders */
-            box-shadow: 0 0 20px rgba(255, 59, 47, 0.6), 0 15px 40px rgba(0,0,0,0.7);
-            z-index: 5;
-            top: 0; /* Forced to the absolute top of the stage area */
-        }
-
-        /* Aligned Left and Right at the TOP */
-        #img-left { left: 10px; transform: translateX(-180px) rotate(-8deg); }
-        #img-right { right: 10px; transform: translateX(180px) rotate(8deg); }
-        
-        /* Middle photo also brought UP to align with the others */
-        #img-middle { 
-            top: -20px; /* Slightly higher for a layered look */
-            left: 50%; 
-            transform: translate(-50%, -100px); 
-            width: 230px; 
-        }
-
-        .reveal { opacity: 1 !important; transform: translate(0) rotate(0) !important; }
-        #img-middle.reveal { transform: translate(-50%, 0) rotate(0) !important; }
-
-        @media (max-width: 1050px) {
-            .pop-photo { width: 140px; position: relative; margin: 10px; left: auto !important; right: auto !important; top: auto !important; }
-            .stage-area { flex-direction: column; align-items: center; }
-            .message-box { width: 90%; margin-top: 20px; }
-            #img-middle { left: auto; transform: none; width: 180px; }
+        @media (max-width: 850px) {
+            .photo-row { flex-direction: column; align-items: center; }
+            .pop-photo { width: 80%; height: auto; }
+            h1 { font-size: 2.5rem; }
         }
     </style>
 </head>
@@ -127,22 +113,22 @@
     <h1>HI HIPHOP COPRISA</h1>
     <button class="start-btn" id="btn" onclick="startSurprise()">Read Message</button>
 
-    <div class="stage-area">
-        <img src="https://i.ibb.co/zh9SqtnP/coprisa.jpg" id="img-left" class="pop-photo">
-        <img src="https://i.ibb.co/ZRRtFj3Q/photo.jpg" id="img-middle" class="pop-photo">
-        <img src="https://i.ibb.co/tPNT8km1/photo.jpg" id="img-right" class="pop-photo">
-
-        <div id="typebox" class="message-box"></div>
+    <div class="photo-row">
+        <img src="https://i.ibb.co/zh9SqtnP/coprisa.jpg" id="img1" class="pop-photo">
+        <img src="https://i.ibb.co/ZRRtFj3Q/photo.jpg" id="img2" class="pop-photo">
+        <img src="https://i.ibb.co/tPNT8km1/photo.jpg" id="img3" class="pop-photo">
     </div>
+
+    <div id="typebox" class="message-box"></div>
 
     <script>
         function startSurprise() {
             document.getElementById('btn').style.display = 'none';
             
-            // Staggered reveals for the top-aligned photos
-            setTimeout(() => document.getElementById('img-left').classList.add('reveal'), 300);
-            setTimeout(() => document.getElementById('img-middle').classList.add('reveal'), 600);
-            setTimeout(() => document.getElementById('img-right').classList.add('reveal'), 900);
+            // Sequential horizontal reveals
+            setTimeout(() => document.getElementById('img1').classList.add('reveal'), 200);
+            setTimeout(() => document.getElementById('img2').classList.add('reveal'), 500);
+            setTimeout(() => document.getElementById('img3').classList.add('reveal'), 800);
             
             const box = document.getElementById('typebox');
             box.style.opacity = 1;
@@ -154,7 +140,7 @@
                 if (i < fullText.length) {
                     box.innerHTML += fullText.charAt(i);
                     i++;
-                    setTimeout(type, 18);
+                    setTimeout(type, 18); 
                     if (i % 8 === 0) window.scrollBy(0, 40);
                 }
             }
